@@ -1,0 +1,154 @@
+<html>
+
+<head>
+
+    <style>
+        .container {
+            display: flex;
+            width: 70%;
+        }
+
+        .grid-blocks {
+            display: flex;
+            flex-flow: wrap;
+        }
+
+        .item {
+            color: white;
+            font-size: 30px;
+            padding: 100px;
+            background-color: rgb(44, 56, 52);
+
+        }
+
+        h1 {
+            margin: 0px;
+            padding: 0px;
+        }
+
+        .grid-buttons {
+            display: block;
+        }
+
+
+        @media only screen and (max-width: 375px) {
+
+            .container {
+                display: block;
+            }
+
+            .item {
+                font-size: 20px;
+                padding: 0px;
+            }
+
+            .grid-blocks {
+                display: block;
+                flex-flow: wrap;
+            }
+        }
+    </style>
+
+</head>
+
+<body onload="initLoad()">
+    <script>
+        const arr = [
+            { value: 1, color: "#000000" },
+            { value: 2, color: "#2B8EAD" },
+            { value: 3, color: "#EFEFEF" },
+            { value: 4, color: "#72C3DC" },
+            { value: 5, color: "#2F454E" },
+            { value: 6, color: "#c9e2e2" },
+            { value: 7, color: "#BFBFBF" },
+            { value: 8, color: "#6F98A8" },
+            { value: 9, color: "#333333" }
+        ]
+
+        const  shuffle = array => {
+            let counter = array.length, temp, index;
+
+            while (counter--) {
+                index = (Math.random() * counter) | 0;
+                temp = array[counter];
+                array[counter] = array[index];
+                array[index] = temp;
+            }
+
+            return array;
+        }
+
+
+        const  initLoad = () =>{
+            const shuffle_btn = document.getElementById('shuffle_btn');
+
+            shuffle_btn.addEventListener('click', () => {
+
+                const data = shuffle(arr.slice(0));
+                console.log('randomes', data);
+                renderUI(data);
+            })
+
+
+            sort_btn = document.getElementById('sort_btn');
+
+            sort_btn.addEventListener('click', () => {
+
+                const data = arr.sort((a, b) => a - b);
+
+                console.log("sort", data);
+
+                renderUI(data);
+
+            })
+            renderUI(arr)
+
+
+        }
+
+        const createDom = (rowItem) => {
+
+            let divElement, p2;
+
+            divElement = document.createElement("div");
+            divElement.style.backgroundColor = rowItem.color;
+            divElement.classList.add("item")
+            p2 = document.createElement('h1');
+            p2.innerHTML = rowItem.value;
+
+            divElement.appendChild(p2);
+
+            return divElement;
+        }
+
+        const renderUI = data => {
+
+            const blocks = document.getElementById('blocks');
+            while (blocks.children.length > 0) {
+                blocks.removeChild(blocks.childNodes[0]);
+            }
+
+            let ui = data.forEach(item => {
+                return blocks.appendChild(createDom(item))
+            });
+
+        }
+
+
+
+    </script>
+
+    <div class="container">
+        <div class='grid-blocks' id="blocks">
+
+        </div>
+        <div class="grid-buttons">
+            <input type="button" value="Shuffle" id="shuffle_btn" />
+            <input type="button" value="Sort" id="sort_btn" />
+        </div>
+
+    </div>
+
+</body>
+
+</html>
